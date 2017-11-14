@@ -9,7 +9,7 @@
 <body>
     <ul>
     {% for animal in animals %}
-       <a href="{% url 'main:animal_about' animal_id=animal.pk %}"> <li>{{animal.name}}</li> </a>
+       <a href="{% url 'main:about' animal_type=animal.type animal_name=animal.url %}"> <li>{{animal.name}}</li> </a>
     {%endfor%}
     </ul>
 </body>

@@ -8,9 +8,10 @@
 </head>
 <body>
     <h1>{{animal.name}}</h1>
-    <h4>Описание:</h4>
+    <h4>Description:</h4>
     <p>{{animal.description}}</p>
-    <p>Тип: {{animal.get_type_display}}</p>
-    <a href="{% url 'main:homepage' %}">Вернуться на главную</a>
+    <p>Type: {{animal.type}}</p>
+    <p>Your stories about these dummies:</p>
+    <a href="{% url 'main:homepage' %}">Back to main</a>
 </body>
 </html>
