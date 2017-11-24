@@ -1,0 +1,44 @@
+{% extends "main/base.html" %}
+{% block title %} Encyclopedia {% endblock title %}
+
+{% block header %} Animals Encyclopedia {% endblock header %}
+
+{% block nav-bar %}
+    <li class="breadcrumb-item">Main</li>
+{% endblock nav-bar %}
+
+{% block content-left %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>Type</th>
+            <th>Number of animals</th>
+            <th>last updated</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for type in types %}
+        <tr>
+            <td>
+                <a href="{% url 'main:about_type' type.name %}">
+                    {{type.name}} <br>
+                </a>
+                <div class="text-muted">
+                    {{type.description}}
+                </div>
+            </td>
+            <td class="align-middle">
+                {{type.my_animals.count}}
+            </td>
+            <td>
+                {{ type.latest_update }}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock content-left %}
+
+{% block content-right %}
+    {% include "main/content-right.html" %}
+{% endblock content-right %}

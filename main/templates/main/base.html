@@ -1,0 +1,47 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <title> {% block title %}  {% endblock title %}</title>
+</head>
+<body>
+<div class="container">
+
+    <!-- HEADER -->
+<h1 class="page-header"> 
+    {% block header %}  {% endblock header %}
+</h1>
+
+<!-- NAV-BAR -->
+<ol class="breadcrumb my-4">
+    {% block nav-bar %}
+
+    {% endblock nav-bar %}
+</ol>
+
+<div class="row">
+
+    <!-- CONTENT -->
+{% block content %}
+
+    <div class="col-lg-8">
+        {% block content-left %}
+
+        {% endblock content-left %}
+    </div>
+
+    <div class="col-lg-4">
+    {% block content-right %}
+
+    {% endblock content-right %}
+    </div>
+
+{% endblock content %}
+</div>
+</div>
+</body>
+</html>

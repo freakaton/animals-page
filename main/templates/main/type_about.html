@@ -1,0 +1,32 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %} {{ animal_type }} {% endblock title %}
+{% block header %} {{ animal_type }} {% endblock header %}
+{% block nav-bar %} 
+
+    <li class="breadcrumb-item active">
+        <a href="{% url 'main:homepage'%}">Main</a>
+    </li>
+    <li class="breadcrumb-item">{{ animal_type }}</li>
+
+{% endblock nav-bar %}
+
+{% block content-left %}
+    <div class="row">
+        <div class="col-lg-6">
+            <img class="img-fluid" src="{% static animal_type.get_image %}" alt="">
+        </div>
+        <div class="col-lg-6"></div>
+        <div class="col-lg-8">
+            <ul>
+                {% for animal in animal_type.my_animals %}
+                    <li>{{ animal.name }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock content-left %}
+
+{% block content-right %}
+    {% include "main/content-right.html" %}
+{% endblock content-right %}

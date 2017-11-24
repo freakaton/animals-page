@@ -2,3 +2,4 @@ myvenv
 .vscode
 *.pyc
 __pycache__
+main/static/images
