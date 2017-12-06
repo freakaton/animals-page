@@ -21,7 +21,7 @@
         <tr>
             <td>
                 <a href="{% url 'main:about_type' type.name %}">
-                    {{type.name}} <br>
+                    {{type.name|capfirst}} <br>
                 </a>
                 <div class="text-muted">
                     {{type.description}}

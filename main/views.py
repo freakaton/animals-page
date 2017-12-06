@@ -22,8 +22,14 @@ def homepage(request):
 
 def about_type(request,animal_type):
     animal_type = Type.objects.get(name=animal_type)
-    animal_type.get_image = 'images/' + animal_type.name + '.png'
-    return render(request,'main/type_about.html',{
+    return render(request,'main/about_type.html',{
                                             'animal_type': animal_type,
                                             'last_animals': last_animals(),
                                             })
+
+def about_animal(request,animal_type,animal_name):
+    animal = Animal.objects.get(name=animal_name)
+    return render(request,'main/about_animal.html',{
+                                                'animal': animal,
+                                                'last_animals': last_animals(),
+                                                    })

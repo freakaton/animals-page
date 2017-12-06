@@ -1,0 +1,26 @@
+.top-buffer {
+    margin-top: 20px;
+}
+
+.animal-image {
+    vertical-align: middle;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.about-type-image{
+    overflow:hidden;    
+}
+
+.animal-card {
+    border: 3px #e9ecef solid;
+    text-align: center;
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 5px;
+}
+.card-link a{
+    float: left;
+}
+

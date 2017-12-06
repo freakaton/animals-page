@@ -1,0 +1,54 @@
+{% extends "main/base.html" %}
+{% load thumbnail %}
+{% block title %} {{ animal_type|title }} {% endblock title %}
+{% block header %} {{ animal_type }} {% endblock header %}
+{% block nav-bar %} 
+
+    <li class="breadcrumb-item active">
+        <a href="{% url 'main:homepage'%}">Main</a>
+    </li>
+    <li class="breadcrumb-item">{{ animal_type }}</li>
+
+{% endblock nav-bar %}
+
+{% block content-left %}
+<div class="row">
+    <div class="col-sm-6">
+        <div class="about-type-image">
+            {% thumbnail animal_type.image "500x400" crop="center" as im %}
+                <img class="rounded img-fluid   " src="{{ im.url }}"   >
+            {% endthumbnail %}
+        </div>
+    </div>
+    <div class="col-sm-6">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum nihil omnis impedit eum obcaecati reiciendis alias suscipit blanditiis, esse nobis commodi cumque ipsa ut laboriosam, minima labore cupiditate quasi officiis?
+    </div>
+</div>
+<div class="row animals-cards">
+    {% for animal in animal_type.my_animals %}
+        {% cycle '' '<div class="col-sm-2"></div>' %}
+        <div class="col-sm-5">
+            <div class="animal-card top-buffer">
+                {% thumbnail animal.image "280x150" crop="center" as im %}
+                    <img class="animal-image img-fluid" src="{{ im.url }}" alt="{{animal.name}}">
+                {% empty %}
+                    <img class="animal-image img-fluid" src="/media/None.jpg" alt="Image does not exist">
+                {% endthumbnail %}
+                <div class="animal-card-block">
+                    <h3> {{animal}} </h3>
+                <div class="card-link">
+                    <a class="btn" href="{% url 'main:about_animal' animal_type animal%}">
+                        <span>More..</span>
+                    </a>
+                </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content-left %}
+
+
+{% block content-right %}
+    {% include "main/content-right.html" %}
+{% endblock content-right %}

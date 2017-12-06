@@ -1,5 +1,5 @@
 myvenv
 .vscode
+*/__pycache__
+media
 *.pyc
-__pycache__
-main/static/images

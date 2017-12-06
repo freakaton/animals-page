@@ -1,0 +1,22 @@
+{% extends "main/base.html" %}
+{% block title %} {{ animal.name|title }} {% endblock title %}
+{% block header %} {{ animal.name|title }} {% endblock header %}
+{% block nav-bar %} 
+
+    <li class="breadcrumb-item active">
+        <a href="{% url 'main:homepage'%}">Main</a>
+    </li>
+    <li class="breadcrumb-item active">
+        <a href="{% url 'main:about_type' animal.type.name %}">{{ animal.type.name }}</a>
+    </li>
+    <li class="breadcrumb-item">
+        {{animal.name}}
+    </li>
+
+{% endblock nav-bar %}
+{% block content-left %}
+    
+{% endblock content-left %}
+{% block content-right %}
+    {% include "main/content-right.html" %}
+{% endblock content-right %}
