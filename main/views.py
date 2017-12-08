@@ -27,9 +27,12 @@ def about_type(request,animal_type):
                                             'last_animals': last_animals(),
                                             })
 
-def about_animal(request,animal_type,animal_name):
+def about_animal(request,animal_name):
     animal = Animal.objects.get(name=animal_name)
     return render(request,'main/about_animal.html',{
                                                 'animal': animal,
                                                 'last_animals': last_animals(),
                                                     })
+
+def user_reg(request):
+    return render(request,'main/register.html')

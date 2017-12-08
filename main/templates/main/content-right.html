@@ -2,7 +2,7 @@
 <ul>
 {% for animal in last_animals %}
     <li class="list-unstyled">
-        {{ animal.name}} <br>
+        <a href="{% url 'main:about_animal' animal.name %}">{{ animal.name}}</a> <br>
         <small>{{ animal.pub_date }}</small>
     </li>
 {% endfor %}

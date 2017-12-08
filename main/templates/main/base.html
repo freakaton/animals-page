@@ -11,19 +11,28 @@
 </head>
 <body>
 <div class="container">
+<!-- HEADER -->
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="page-header"> 
+            {% block header %}  {% endblock header %}
+        </h1>
+    </div>
 
-    <!-- HEADER -->
-<h1 class="page-header"> 
-    {% block header %}  {% endblock header %}
-</h1>
+    <div class="col-sm-6"> 
+        <ol class="breadcrumb">  
+                {% block nav-bar %}
 
-<!-- NAV-BAR -->
-<ol class="breadcrumb my-4">
-    {% block nav-bar %}
-
-    {% endblock nav-bar %}
-</ol>
-
+                {% endblock nav-bar %}
+        </ol>
+    </div>
+    <div class="col-sm-2"></div>
+    <div class="col-sm-2">
+        <div class="whoami">
+            <a href="{% url 'main:register' %}">Register </a>  <a href="#"> | Log in</a>
+        </div>
+    </div>
+</div>
 <div class="row">
 
     <!-- CONTENT -->

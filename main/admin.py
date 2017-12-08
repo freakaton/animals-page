@@ -3,7 +3,9 @@ from .models import Animal, Type
 
 # Register your models here.
 
-class Admin(admin.ModelAdmin):
-    pass
-admin.site.register(Animal, Admin)
-admin.site.register(Type)
+class AnimalAdmin(admin.ModelAdmin):
+    date_hierarchy = 'pub_date'
+    exclude = ('edit_date',)
+    list_filter = ('type',)
+
+admin.site.register(Animal,AnimalAdmin)

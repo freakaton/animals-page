@@ -24,3 +24,20 @@
     float: left;
 }
 
+.whoami {
+    text-align: center;
+    display: block;
+    padding: .75rem 1rem;
+    margin-bottom: 1rem;
+    background-color: #e9ecef;
+    border-radius: .25rem;
+}
+
+.description {
+    width: 70%;
+    margin: 0;
+}
+
+.circle {
+    border-radius: 100px;
+}
