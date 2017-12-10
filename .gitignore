@@ -3,3 +3,4 @@ myvenv
 */__pycache__
 media
 *.pyc
+main/migrations

@@ -14,14 +14,14 @@
 {% block content-left %}
 <div class="row">
     <div class="col-sm-6">
-        <div class="about-type-image">
+        <div class="about-image">
             {% thumbnail animal_type.image "500x400" crop="center" as im %}
                 <img class="rounded img-fluid   " src="{{ im.url }}"   >
             {% endthumbnail %}
         </div>
     </div>
     <div class="col-sm-6">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatum nihil omnis impedit eum obcaecati reiciendis alias suscipit blanditiis, esse nobis commodi cumque ipsa ut laboriosam, minima labore cupiditate quasi officiis?
+        {{animal_type.description}}
     </div>
 </div>
 <div class="row animals-cards">
@@ -29,18 +29,20 @@
         {% cycle '' '<div class="col-sm-2"></div>' %}
         <div class="col-sm-5">
             <div class="animal-card top-buffer">
+                <a href="{% url 'main:about_animal' animal%}">
                 {% thumbnail animal.image "280x150" crop="center" as im %}
                     <img class="animal-image img-fluid" src="{{ im.url }}" alt="{{animal.name}}">
                 {% empty %}
                     <img class="animal-image img-fluid" src="/media/None.jpg" alt="Image does not exist">
                 {% endthumbnail %}
+                </a>
                 <div class="animal-card-block">
                     <h3> {{animal}} </h3>
-                <div class="card-link">
-                    <a class="btn" href="{% url 'main:about_animal' animal%}">
-                        <span>More..</span>
-                    </a>
-                </div>
+                <div class="card-desc">
+                        <a href="{% url 'main:about_animal' animal%}">
+                            <p class="text-muted">{{animal.description_short}}</p>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

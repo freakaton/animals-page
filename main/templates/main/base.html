@@ -27,11 +27,17 @@
         </ol>
     </div>
     <div class="col-sm-2"></div>
+    {% block login_bar %}
     <div class="col-sm-2">
         <div class="whoami">
-            <a href="{% url 'main:register' %}">Register </a>  <a href="#"> | Log in</a>
+            {% if user.is_authenticated %}
+                Welcome, {{ user }} <a href="{% url 'main:logout' %}">logout</a>
+            {% else %}
+                <a href="{% url 'main:register' %}">Sign up </a>  <a href="{% url 'main:login' %}"> | Sign in</a>
+            {% endif %}
         </div>
     </div>
+    {% endblock login_bar %}
 </div>
 <div class="row">
 

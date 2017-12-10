@@ -1,0 +1,27 @@
+{% extends "main/base.html" %}
+{% block title %}Log in{% endblock title %}
+{% block header %}Sign in{% endblock header %}
+
+{% block nav-bar %} 
+
+    <li class="breadcrumb-item active">
+        <a href="{% url 'main:homepage'%}">Main</a>
+    </li>
+    <li class="breadcrumb-item">Sign in</li>
+
+{% endblock nav-bar %}
+{% block login_bar %}{% endblock login_bar %}
+{% block content %}
+<div class="col-sm-4">
+  <form method="post">
+    <div class="form-group">
+      {% csrf_token %}
+      <label for="username_id">Username</label>
+      <input class="form-control" type="text" name="username" id="username_id" placeholder="Username">
+      <label for="password_id">Password</label>
+      <input name="password" type="password" class="form-control" id="password_id" placeholder="Password">
+    </div>
+    <button class="btn btn-primary" type="submit">Login</button>
+  </form>
+</div>
+{% endblock %}

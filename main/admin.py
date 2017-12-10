@@ -9,3 +9,4 @@ class AnimalAdmin(admin.ModelAdmin):
     list_filter = ('type',)
 
 admin.site.register(Animal,AnimalAdmin)
+admin.site.register(Type)

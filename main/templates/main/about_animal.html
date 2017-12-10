@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load thumbnail %}
 {% block title %} {{ animal.name|title }} {% endblock title %}
 {% block header %} {{ animal.name|title }} {% endblock header %}
 {% block nav-bar %} 
@@ -15,7 +16,20 @@
 
 {% endblock nav-bar %}
 {% block content-left %}
-    
+<div class="row">
+    <div class="col-sm-6">
+        <div class="about-image">
+            {% thumbnail animal.image "500x400" crop="center" as im %}
+                <img class="rounded img-fluid" src="{{ im.url }}"   >
+            {% empty %}
+                <img class="animal-image img-fluid" src="/media/None.jpg" alt="Image does not exist">
+            {% endthumbnail %}
+        </div>
+    </div>
+    <div class="col-sm-6">
+        {{animal.description}}
+    </div>
+</div>
 {% endblock content-left %}
 {% block content-right %}
     {% include "main/content-right.html" %}

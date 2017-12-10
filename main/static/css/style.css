@@ -2,14 +2,19 @@
     margin-top: 20px;
 }
 
-.animal-image {
+.animal-card .animal-image {
     vertical-align: middle;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
 }
 
-.about-type-image{
+.card-desc a {
+    color: inherit;
+    text-decoration: inherit;
+}
+
+.about-image{
     overflow:hidden;    
 }
 
@@ -20,8 +25,10 @@
     vertical-align: top;
     border-radius: 5px;
 }
-.card-link a{
-    float: left;
+
+.card-desc {
+    text-align: center;
+    margin-bottom: 0;
 }
 
 .whoami {
