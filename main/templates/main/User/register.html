@@ -1,4 +1,6 @@
 {% extends "main/base.html" %}
+{% load static %}
+<script src="{% static 'js/register.js' %}"></script>
 {% block title %}Create new User{% endblock title %}
 {% block header %}Registration{% endblock header %}
 {% block login_bar %}{% endblock login_bar %}
@@ -12,17 +14,70 @@
 {% endblock nav-bar %}
 {% block content %}
 <div class="col-sm-4">
-    <form method="post">
-        <div class="form-group">
-          {% csrf_token %}
-          <label for="username_id">Username</label>
-          <input class="form-control" type="text" name="username" id="username_id" placeholder="Username">
-          <label for="email">E-mail</label>
-          <input class="form-control" type="email"  name="email" id="email" placeholder="email@example.com">
-          <label for="password_id">Password</label>
-          <input name="password" type="password" class="form-control" id="password_id" placeholder="Password">
+    {% if error == '!full_data' %}
+        <div class="alert-warning alert">
+            Вы ввели не все данные!
         </div>
-        <button class="btn btn-primary" type="submit">Login</button>
+    {% endif %}
+    <form onsubmit="return false" method="post">
+        <div class="form-group">
+            {% csrf_token %}
+            <label for="username">Username</label>
+            <input autocomplete="off" class="form-control" type="text" name="username" id="username" placeholder="Username">
+            <p id="username_er" class="er">
+                {% if error == 'exist' %} Такое имя пользователя уже существует. {% endif %}
+            </p>
+          
+            <label for="password_id">Password</label>
+            <input autocomplete="new-password" name="password" type="password" class="form-control" id="password" placeholder="Password">
+            <small class="text-muted">password should contain at least 6 chars</small>
+            <p id="password_er" class="er"></p>
+          
+            <label for="re_password_id">Repeat password</label>
+            <input autocomplete="new-password" type="password" class="form-control" id="re_password" placeholder="Re-password">
+            <p id="re_password_er" class="er"></p>
+
+            <p class="text-muted">not necessarily:</p>
+
+            <label for="email">E-mail</label>
+            <input autofill="off" class="form-control" type="email"  name="email" id="email" placeholder="email@example.com">
+
+            <label for="first_name">First name</label>
+            <input autofill="off" class="form-control" type="text"  name="first_name" id="first_name" placeholder="Ivan">
+            
+            <label for="last_name">Last name</label>
+            <input autofill="off" class="form-control" type="text"  name="last_name" id="last_name" placeholder="Ivanov">
+        </div>
+        <button class="btn btn-primary" onclick="checkForm(this.parentNode)" type="submit">Login</button>
     </form>
 </div>
+<script>
+    function getById(str){
+        return document.getElementById(str)
+    }
+    function clearErBoxes(){
+        var erBoxes = document.getElementsByClassName('er');
+        var i
+        for(i=0;i < erBoxes.length;i++){
+            erBoxes[i].innerHTML = '';
+        }
+    }
+
+    function checkForm(form){
+        clearErBoxes();
+        if (getById('username').value == ""){
+            getById('username_er').innerHTML="username have to contain at least 1 char";
+            return false;        
+        }
+        else if (getById('re_password').value != getById('password').value ){
+            getById('re_password_er').innerHTML="passwords does not match";
+            return false;      
+        }
+        else if (getById('password').value.length < 6 ){
+            getById('password_er').innerHTML="password is too small";  
+            return false;       
+        }
+        else form.submit()
+    }
+</script>
 {% endblock content %}

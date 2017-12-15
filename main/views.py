@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import auth
+from django.contrib.auth.models import User
 from .models import Animal, Type
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
 def last_animals():
@@ -37,7 +39,23 @@ def about_animal(request,animal_name):
                                                     })
 
 def register(request):
-    return render(request,'main/User/register.html')
+    if request.method == 'POST':
+        try:
+            User.objects.get(username=request.POST['username'])
+            return render(request,'main/User/register.html',{'error':'exist'})
+        except ObjectDoesNotExist:
+            pass
+        context = request.POST
+        if context['username'] and context['password']:
+            user = User.objects.create_user(username = context['username'],
+                                            email = context['email'],
+                                            password = context['password'])
+            user.save()
+            return redirect('/')
+        else:
+            return render(request,'main/User/register.html',{'error':'!full_data'})
+    else:
+        return render(request,'main/User/register.html')
 
 def login(request):
     if request.method == 'POST':
@@ -49,10 +67,9 @@ def login(request):
                 auth.login(request, user)
                 return redirect('/')
         else:
-            pass
+            return render(request,'main/User/login.html',{'error':'!exist'})
     else:
-        pass
-    return render(request,'main/User/login.html')
+        return render(request,'main/User/login.html')
 
 def logout(request):
     auth.logout(request)

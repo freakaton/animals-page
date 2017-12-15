@@ -23,5 +23,10 @@
     </div>
     <button class="btn btn-primary" type="submit">Login</button>
   </form>
+  {% if error == '!exist' %}
+    <div class="alert alert-warning top-buffer">
+      This user isn't exist or password is wrong
+    </div>
+  {% endif %}
 </div>
 {% endblock %}
