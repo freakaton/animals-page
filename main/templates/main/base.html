@@ -29,9 +29,12 @@
     <div class="col-sm-2"></div>
     {% block login_bar %}
     <div class="col-sm-2">
+        {% if user.is_staff %}
+            <a href="#"> xx</a> requests
+        {% endif %}
         <div class="whoami">
             {% if user.is_authenticated %}
-                Welcome, {{ user }} <a href="{% url 'main:logout' %}">logout</a>
+                Welcome, <a href="{% url 'main:profile' %}">{{ user }}</a> <a href="{% url 'main:logout' %}">logout</a>
             {% else %}
                 <a href="{% url 'main:register' %}">Sign up </a>  <a href="{% url 'main:login' %}"> | Sign in</a>
             {% endif %}
@@ -52,7 +55,7 @@
 
     <div class="col-sm-4">
     {% block content-right %}
-
+        {% include "main/content-right.html" %}
     {% endblock content-right %}
     </div>
 

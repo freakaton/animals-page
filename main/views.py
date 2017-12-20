@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
-from .models import Animal, Type
+from .models import Animal, Type, Post
 from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
@@ -21,7 +21,6 @@ def homepage(request):
     return render(request, 'main/main_page.html', {
                                             'types':animal_types,
                                             'last_animals':last_animals(),
-                                            'user': user,
                                             })
 
 def about_type(request,animal_type):
@@ -32,10 +31,27 @@ def about_type(request,animal_type):
                                             })
 
 def about_animal(request,animal_name):
+    error = ''
     animal = Animal.objects.get(name=animal_name)
+    posts = Post.objects.filter(where=animal,verified=True)
+    if request.method == 'POST':
+        if request.user.is_authenticated and request.user.is_active:
+            if len(request.POST['text']) > 10:
+                new_post = Post.objects.create(
+                                user=request.user,
+                                text=request.POST['text'],
+                                where=animal)
+                new_post.save()
+                error = 'ok'
+            else:
+                error = '2small'
+        else:
+            error = '!auth'
     return render(request,'main/about_animal.html',{
                                                 'animal': animal,
                                                 'last_animals': last_animals(),
+                                                'posts':posts,
+                                                'error':error,
                                                     })
 
 def register(request):
@@ -74,3 +90,27 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+def profile(request):
+    error = ''
+    posts = Post.objects.filter(verified = False)
+    if request.method == 'POST':
+        if request.POST['post_id'] and request.POST['desicion']:
+            post_id = request.POST['post_id']
+            desicion = request.POST['desicion']
+            try:
+                post = Post.objects.get(pk=post_id)
+            except ObjectDoesNotExist:
+                return render(request,'main/User/profile.html',{'posts':posts, 'error':'!exist',})
+            if desicion == 'apply':
+                post.verified = True
+                post.save()
+            elif desicion == 'decline':
+                post.delete()
+            else:
+                error = '?'
+        else:
+            error = '!full_data'
+    return render(request,'main/User/profile.html',{'posts':posts,
+                                                    'error':error,
+                                                    })

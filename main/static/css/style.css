@@ -49,3 +49,18 @@
     border-radius: 100px;
 }
 
+.post-block {
+    background-color: #efefef;
+    padding: 5px 0 5px 0;
+}
+.post-block-desicion {
+    text-align: center;
+}
+
+.post-block-info {
+    position: relative;
+}
+
+.post-block-text {
+    vertical-align: middle;
+}

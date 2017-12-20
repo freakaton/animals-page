@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 # Create your models here.
 
 
@@ -34,5 +34,15 @@ class Animal(models.Model):
     description = models.CharField(max_length=5000, null=True)
     type = models.ForeignKey('Type',on_delete=models.CASCADE)
     pub_date = models.DateTimeField(auto_now_add=True)
-    edit_date = models.DateTimeField(null=True)
+    edit_date = models.DateTimeField(null=True, auto_now=True)
     image = models.ImageField(upload_to='animales/',null=True, blank=True)
+
+class Post (models.Model):
+    def __str__(self):
+        return self.user + 'at' + 'pub_date'
+    user = models.ForeignKey(User)
+    text = models.CharField(max_length=10000)
+    pub_date = models.DateTimeField(auto_now_add=True)
+    edit_date = models.DateTimeField(null=True, auto_now=True)
+    verified = models.BooleanField(default=False)
+    where = models.ForeignKey(Animal)
