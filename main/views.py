@@ -45,8 +45,6 @@ def about_animal(request,animal_name):
                 error = 'ok'
             else:
                 error = '2small'
-        else:
-            error = '!auth'
     return render(request,'main/about_animal.html',{
                                                 'animal': animal,
                                                 'last_animals': last_animals(),
@@ -93,7 +91,11 @@ def logout(request):
 
 def profile(request):
     error = ''
-    posts = Post.objects.filter(verified = False)
+    posts = Post.objects.filter(user = request.user)
+    if request.user.is_staff:
+        posts_to_check = Post.objects.filter(verified = False)
+    else:
+        posts_to_check = None
     if request.method == 'POST':
         if request.POST['post_id'] and request.POST['desicion']:
             post_id = request.POST['post_id']
@@ -112,5 +114,6 @@ def profile(request):
         else:
             error = '!full_data'
     return render(request,'main/User/profile.html',{'posts':posts,
+                                                    'posts_to_check':posts_to_check,
                                                     'error':error,
                                                     })

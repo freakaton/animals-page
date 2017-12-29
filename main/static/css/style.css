@@ -51,16 +51,17 @@
 
 .post-block {
     background-color: #efefef;
-    padding: 5px 0 5px 0;
+    padding: 5px;
 }
 .post-block-desicion {
     text-align: center;
 }
 
 .post-block-info {
-    position: relative;
+    color:#fc3a9e;
 }
 
 .post-block-text {
     vertical-align: middle;
+    margin-left: 5px;
 }

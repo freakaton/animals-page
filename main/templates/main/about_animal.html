@@ -29,37 +29,39 @@
     <div class="col-sm-6">
         {{animal.description}}
     </div>
-    <div class="col-sm-12">
-
-    </div>
+    {% for post in posts %}
+        <div class="col-sm-8 top-buffer post-block">
+            <p class="post-block-info ">{{post.user}} </p>
+            <p class="post-block-text" >{{post.text}}</p>
+            <small class="text-muted">published {{post.pub_date}}</small>
+        </div>
+    {% endfor %}
     <div class="col-sm-12 top-buffer">
+
         {% if user.is_authenticated %}
-        <form method="post">
-            <div class="form-group">
-                {% csrf_token %}
-                <label for="text">You can add some info about this animal:</label>
-                <textarea class="form-control" type="text" name="text" id="text" placeholder="Your post..."></textarea>
-            </div>
-            <button class="btn" type="submit">Send</button>
-        </form>
-       {% else %}
+            <form method="post">
+                <div class="form-group">
+                    {% csrf_token %}
+                    <label for="text">You can add some info about this animal:</label>
+                    <textarea class="form-control" type="text" name="text" id="text" placeholder="Your post..."></textarea>
+                </div>
+                <button class="btn" type="submit">Send</button>
+            </form>
+        {% else %}
             <div class="alert alert-warning top-buffer">
-                To post you should log in first.
+                To post you should log in first. {{error}}
             </div>
-       {% endif %}
-       {% if error == '2small' %}
+        {% endif %}
+
+        {% if not error == '' %}
             <div class="alert alert-warning top-buffer">
-                You need to enter at least 10 characters to post.
-            </div>
-       {% endif %}
-       {% if error == '!auth' %}
-            <div class="alert alert-warning top-buffer">
-                You should to log in by active user to post.
-            </div>
-       {% endif %}
-       {% if error == 'ok' %}
-            <div class="alert alert-warning top-buffer">
-                We brought your post. When it will be checked, Your post can be viewable on this page)
+                {% if error == '2small' %}
+                    You need to enter at least 10 characters to post.
+                {% endif %}
+
+                {% if error == 'ok' %}
+                    We brought your post. When it will be checked, Your post can be viewable on this page)
+                {% endif %}
             </div>
         {% endif %}
     </div>

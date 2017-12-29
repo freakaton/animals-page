@@ -39,7 +39,7 @@ class Animal(models.Model):
 
 class Post (models.Model):
     def __str__(self):
-        return self.user + 'at' + 'pub_date'
+        return 'post at animal ' + self.where.get_name()
     user = models.ForeignKey(User)
     text = models.CharField(max_length=10000)
     pub_date = models.DateTimeField(auto_now_add=True)

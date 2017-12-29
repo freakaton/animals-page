@@ -11,12 +11,16 @@
 {% endblock nav-bar %}
 
 {% block content %}
-    {% for post in posts  %}
-        <div class="col-sm-6 post-block top-buffer">
-            <small class="disabled post-block-info">published: {{post.pub_date}} by {{ post.user }} about {{post.where}}</small>
-            <p class="post-block-text" >{{post.text}}</p>
+    {% if user.is_staff %}
+        <div class="col-sm-12"> 
+            <h3>Posts to check:</h3>
         </div>
-        <div class="col-sm-1 top-buffer post-block-desicion">
+        {% for post in posts_to_check  %}
+            <div class="col-sm-6 post-block top-buffer">
+                <small class="disabled post-block-info">published: {{post.pub_date}} by {{ post.user }} about {{post.where}}, {{post.where.type}}</small>
+                <p class="post-block-text" >{{post.text}}</p>
+            </div>
+            <div class="col-sm-1 top-buffer post-block-desicion">
             <form method="POST">
                 {% csrf_token %}
                 <input type="hidden" name="desicion" value="apply">
@@ -29,7 +33,23 @@
                 <input type="hidden" name="post_id" value="{{post.pk}}">
                 <button class="btn btn-danger top-buffer">decline</button>
             </form>
+            </div>
+            <div class="clearfix"></div>
+        {% endfor %}
+        {% if not posts_to_check %}
+            <h5 class="top-buffer">There are no posts to check.</h5>
+        {% endif %}
+    {% endif %}
+    <div class="col-sm-12 top-buffer"> 
+        <h3>My posts:</h3>
+    </div>
+    {% for post in posts %}
+        <div class="col-sm-7 post-block top-buffer">
+            <small class="text-muted">published: {{post.pub_date}} about {{post.where}}, {{post.where.type}}</small>
+            <p class="post-block-text" >{{post.text}}</p>
         </div>
-        <div class="clearfix"></div>
     {% endfor %}
+    {% if not posts %}
+        <h5 class="top-buffer">You haven't written any posts yet.</h5>
+    {% endif %}
 {% endblock content %}
