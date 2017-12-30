@@ -16,7 +16,10 @@ def homepage(request):
     animal_types = []
     user = request.user
     for type in Type.objects.all():
-        type.latest_update = type.animal_set.order_by('-pub_date')[0].pub_date
+        try:
+            type.latest_update = type.animal_set.order_by('-pub_date')[0].pub_date
+        except Exception:
+            type.latest_update = '-'
         animal_types.append(type)
     return render(request, 'main/main_page.html', {
                                             'types':animal_types,

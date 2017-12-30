@@ -48,6 +48,15 @@
             <small class="text-muted">published: {{post.pub_date}} about {{post.where}}, {{post.where.type}}</small>
             <p class="post-block-text" >{{post.text}}</p>
         </div>
+        <div class="col-sm-1">
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="desicion" value="decline">
+                <input type="hidden" name="post_id" value="{{post.pk}}">
+                <button class="btn btn-danger top-buffer">X</button>
+                <small>delete post</small>
+            </form>
+        </div>
     {% endfor %}
     {% if not posts %}
         <h5 class="top-buffer">You haven't written any posts yet.</h5>

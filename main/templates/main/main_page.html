@@ -30,7 +30,7 @@
                 <div class="col-sm-8">
                     {{type.name|capfirst}}<br></a>
                     <div class="description">
-                        <span class="text-muted">{{type.description_short}}</span>
+                        <span class="text-muted">{{type.description}}</span>
                     </div>
                 </div>
             </td>
@@ -38,7 +38,7 @@
                 {{type.my_animals.count}}
             </td>
             <td>
-                {{ type.latest_update }}
+                {{ type.latest_update|date:'d N Y, G:i'|default:'-' }}
             </td>
         </tr>
     {% endfor %}

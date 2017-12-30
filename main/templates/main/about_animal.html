@@ -26,14 +26,14 @@
             {% endthumbnail %}
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 top-buffer">
         {{animal.description}}
     </div>
     {% for post in posts %}
         <div class="col-sm-8 top-buffer post-block">
-            <p class="post-block-info ">{{post.user}} </p>
+            <p class="post-block-info ">{{post.user}}  </p>
             <p class="post-block-text" >{{post.text}}</p>
-            <small class="text-muted">published {{post.pub_date}}</small>
+            <small class="text-muted">published {{post.pub_date|date:'d N Y, G:i'}}</small>
         </div>
     {% endfor %}
     <div class="col-sm-12 top-buffer">

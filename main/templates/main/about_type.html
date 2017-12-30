@@ -20,7 +20,7 @@
             {% endthumbnail %}
         </div>
     </div>
-    <div class="col-sm-6">
+    <div class="col-sm-6 top-buffer">
         {{animal_type.description}}
     </div>
 </div>
@@ -40,7 +40,7 @@
                     <h3> {{animal}} </h3>
                 <div class="card-desc">
                         <a href="{% url 'main:about_animal' animal%}">
-                            <p class="text-muted">{{animal.description_short}}</p>
+                            <p class="text-muted">{{animal.description}}</p>
                         </a>
                     </div>
                 </div>
