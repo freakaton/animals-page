@@ -12,6 +12,7 @@
 {% endblock nav-bar %}
 
 {% block content-left %}
+<a href="{% url 'main:add_animal' animal_type.name %}">You can create new animal topic for this type</a>
 <div class="row">
     <div class="col-sm-6">
         <div class="about-image">
@@ -26,26 +27,28 @@
 </div>
 <div class="row animals-cards">
     {% for animal in animal_type.my_animals %}
-        {% cycle '' '<div class="col-sm-2"></div>' %}
-        <div class="col-sm-5">
-            <div class="animal-card top-buffer">
-                <a href="{% url 'main:about_animal' animal%}">
-                {% thumbnail animal.image "280x150" crop="center" as im %}
-                    <img class="animal-image img-fluid" src="{{ im.url }}" alt="{{animal.name}}">
-                {% empty %}
-                    <img class="animal-image img-fluid" src="/media/None.jpg" alt="Image does not exist">
-                {% endthumbnail %}
-                </a>
-                <div class="animal-card-block">
-                    <h3> {{animal}} </h3>
-                <div class="card-desc">
-                        <a href="{% url 'main:about_animal' animal%}">
-                            <p class="text-muted">{{animal.description}}</p>
-                        </a>
+        {% if animal.verified %}
+            {% cycle '' '<div class="col-sm-2"></div>' %}
+            <div class="col-sm-5">
+                <div class="animal-card top-buffer">
+                    <a href="{% url 'main:about_animal' animal%}">
+                    {% thumbnail animal.image "280x150" crop="center" as im %}
+                        <img class="animal-image img-fluid" src="{{ im.url }}" alt="{{animal.name}}">
+                    {% empty %}
+                        <img class="animal-image img-fluid" src="/media/None.jpg" alt="Image does not exist">
+                    {% endthumbnail %}
+                    </a>
+                    <div class="animal-card-block">
+                        <h3> {{animal}} </h3>
+                    <div class="card-desc">
+                            <a href="{% url 'main:about_animal' animal%}">
+                                <p class="text-muted">{{animal.description}}</p>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+        {% endif %}
     {% endfor %}
 </div>
 {% endblock content-left %}

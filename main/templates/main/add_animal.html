@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+{% block title %}Add new animal{% endblock title %}
+{% block header %}Add new to {{type.name}} {% endblock header %}
+{% block nav-bar %}
+
+<li class="breadcrumb-item active">
+    <a href="{% url 'main:homepage'%}">Main</a>
+</li>
+<li class="breadcrumb-item active">
+   <a href="{% url 'main:about_type' type.name %}"> {{ type.name }}</a>
+</li>
+<li class="breadcrumb-item">Add new</li>
+
+{% endblock nav-bar %}
+
+{% block content-left %}
+<div class="col-sm-6">
+    <form method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            {% csrf_token %}
+            {% for field in form %}
+                {{field.label_tag}}
+                {{field}}
+                {% if field.errors %}
+                    <div class="alert alert-warning top-buffer">{{field.errors.as_text}}</div>
+                {% endif %}
+            {% endfor %}
+            <button class="btn btn-default top-buffer">Create</button>
+        </div>
+    </form>
+
+</div>
+{% endblock content-left %}

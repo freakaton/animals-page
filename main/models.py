@@ -11,7 +11,7 @@ class Type(models.Model):
         return self.name
 
     def my_animals(self):
-        animals = self.animal_set.all()
+        animals = self.animal_set.filter(verified=True)
         return animals
 
     @property
@@ -31,6 +31,7 @@ class Animal(models.Model):
     pub_date = models.DateTimeField(auto_now_add=True)
     edit_date = models.DateTimeField(null=True, auto_now=True)
     image = models.ImageField(upload_to='animales/',null=True, blank=True)
+    verified = models.BooleanField(default=False)
 
 class Post (models.Model):
     def __str__(self):

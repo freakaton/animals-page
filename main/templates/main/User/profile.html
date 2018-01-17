@@ -1,4 +1,5 @@
 {% extends "main/base.html" %}
+{% load thumbnail %}
 {% block title %} My profile {% endblock title %}
 {% block header %} {{user|title}} {% endblock header %}
 {% block nav-bar %} 
@@ -13,25 +14,29 @@
 {% block content %}
     {% if user.is_staff %}
         <div class="col-sm-12"> 
+            <h3>Animals to check:</h3>
+        </div>
+        {% for animal in animals_to_check  %}
+            
+        {% endfor %}
+        {% if not animals_to_check %}
+            <h5 class="top-buffer">There are no posts to check.</h5>
+        {% endif %}
+        <div class="col-sm-12"> 
             <h3>Posts to check:</h3>
         </div>
         {% for post in posts_to_check  %}
             <div class="col-sm-6 post-block top-buffer">
-                <small class="disabled post-block-info">published: {{post.pub_date}} by {{ post.user }} about {{post.where}}, {{post.where.type}}</small>
+                <small class="disabled post-block-info">published: {{post.pub_date}} by {{ post.user }} about <a href="{% url 'main:about_animal' post.where %} "> {{post.where}}</a>, {{post.where.type}}</small>
                 <p class="post-block-text" >{{post.text}}</p>
             </div>
             <div class="col-sm-1 top-buffer post-block-desicion">
             <form method="POST">
                 {% csrf_token %}
-                <input type="hidden" name="desicion" value="apply">
                 <input type="hidden" name="post_id" value="{{post.pk}}">
-                <button class="btn btn-success">apply</button>
-            </form>
-            <form method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="desicion" value="decline">
+                <button class="btn btn-success" name="desicion" value="apply">apply</button>
                 <input type="hidden" name="post_id" value="{{post.pk}}">
-                <button class="btn btn-danger top-buffer">decline</button>
+                <button class="btn btn-danger top-buffer" name="desicion" value="decline">decline</button>
             </form>
             </div>
             <div class="clearfix"></div>
@@ -45,7 +50,7 @@
     </div>
     {% for post in posts %}
         <div class="col-sm-7 post-block top-buffer">
-            <small class="text-muted">published: {{post.pub_date}} about {{post.where}}, {{post.where.type}}</small>
+            <small class="text-muted">published: {{post.pub_date}} about <a href="{% url 'main:about_animal' post.where %} ">{{post.where}}</a>, {{post.where.type}}</small>
             <p class="post-block-text" >{{post.text}}</p>
         </div>
         <div class="col-sm-1">

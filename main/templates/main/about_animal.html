@@ -36,34 +36,29 @@
             <small class="text-muted">published {{post.pub_date|date:'d N Y, G:i'}}</small>
         </div>
     {% endfor %}
-    <div class="col-sm-12 top-buffer">
+    <div class="col-sm-10 top-buffer">
 
         {% if user.is_authenticated %}
-            <form method="post">
-                <div class="form-group">
-                    {% csrf_token %}
-                    <label for="text">You can add some info about this animal:</label>
-                    <textarea class="form-control" type="text" name="text" id="text" placeholder="Your post..."></textarea>
+            {% if form.success %}
+                <div class="alert alert-info">
+                    We successfully brought your post.
+                    If your post will be vaild, you will see it on this page.
                 </div>
-                <button class="btn" type="submit">Send</button>
-            </form>
+            {% else %}
+                <form method="post">
+                    <div class="form-group">
+                        {% csrf_token %}
+                        {{form}}
+                    </div>
+                    <button class="btn btn-default" type="submit">Send</button>
+                </form>
+            {% endif %}
         {% else %}
             <div class="alert alert-warning top-buffer">
                 To post you should log in first. {{error}}
             </div>
         {% endif %}
 
-        {% if not error == '' %}
-            <div class="alert alert-warning top-buffer">
-                {% if error == '2small' %}
-                    You need to enter at least 10 characters to post.
-                {% endif %}
-
-                {% if error == 'ok' %}
-                    We brought your post. When it will be checked, Your post can be viewable on this page)
-                {% endif %}
-            </div>
-        {% endif %}
     </div>
 </div>
 {% endblock content-left %}

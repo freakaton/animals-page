@@ -1,16 +1,16 @@
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponse, Http404
 from django.contrib import auth
 from django.contrib.auth.models import User
 from .models import Animal, Type, Post
 from django.core.exceptions import ObjectDoesNotExist
+from main import forms
 
-# Create your views here.
-def last_animals():
+def last_animals(request):
     last_animals = []
     for animal in Animal.objects.order_by('-pub_date')[:5]:
         last_animals.append(animal)
-    return last_animals
+    return {'last_animals':last_animals}
  
 def homepage(request):
     animal_types = []
@@ -23,37 +23,48 @@ def homepage(request):
         animal_types.append(type)
     return render(request, 'main/main_page.html', {
                                             'types':animal_types,
-                                            'last_animals':last_animals(),
                                             })
 
 def about_type(request,animal_type):
     animal_type = Type.objects.get(name=animal_type)
     return render(request,'main/about_type.html',{
                                             'animal_type': animal_type,
-                                            'last_animals': last_animals(),
                                             })
 
 def about_animal(request,animal_name):
-    error = ''
     animal = Animal.objects.get(name=animal_name)
     posts = Post.objects.filter(where=animal,verified=True)
     if request.method == 'POST':
-        if request.user.is_authenticated and request.user.is_active:
-            if len(request.POST['text']) > 10:
-                new_post = Post.objects.create(
-                                user=request.user,
-                                text=request.POST['text'],
-                                where=animal)
-                new_post.save()
-                error = 'ok'
-            else:
-                error = '2small'
+        form = forms.Add_post_form(request.POST)
+        if form.is_valid():
+            new_post = form.save(commit=False)
+            new_post.where = animal
+            new_post.user = request.user
+            new_post.save()
+            form.success = True
+    else:
+        form = forms.Add_post_form
     return render(request,'main/about_animal.html',{
                                                 'animal': animal,
-                                                'last_animals': last_animals(),
                                                 'posts':posts,
-                                                'error':error,
+                                                'form':form,
                                                     })
+
+def add_animal(request,animal_type):
+    animal_type = get_object_or_404(Type,name=animal_type)
+    if request.method == 'POST':
+        form = forms.Add_animal_form(request.POST,request.FILES)
+        if form.is_valid():
+            new_animal = form.save(commit=False)
+            new_animal.type = animal_type
+            new_animal.save()
+            return redirect('main:about_animal',animal_name=new_animal.name)
+    else:
+        form = forms.Add_animal_form
+    return render(request, 'main/add_animal.html',{
+                                                'type': animal_type,
+                                                'form': form})
+
 
 def register(request):
     if request.method == 'POST':
@@ -93,30 +104,27 @@ def logout(request):
     return redirect('/')
 
 def profile(request):
-    error = ''
     posts = Post.objects.filter(user = request.user)
     if request.user.is_staff:
         posts_to_check = Post.objects.filter(verified = False)
+        animals_to_check = Animal.objects.filter(verified = False)
     else:
         posts_to_check = None
+        animals_to_check = None
+
     if request.method == 'POST':
-        if request.POST['post_id'] and request.POST['desicion']:
+        if request.POST['post_id']:
             post_id = request.POST['post_id']
             desicion = request.POST['desicion']
-            try:
-                post = Post.objects.get(pk=post_id)
-            except ObjectDoesNotExist:
-                return render(request,'main/User/profile.html',{'posts':posts, 'error':'!exist',})
+            post = Post.objects.get(pk=post_id)
             if desicion == 'apply':
                 post.verified = True
                 post.save()
             elif desicion == 'decline':
                 post.delete()
             else:
-                error = '?'
-        else:
-            error = '!full_data'
+                raise Http404
     return render(request,'main/User/profile.html',{'posts':posts,
                                                     'posts_to_check':posts_to_check,
-                                                    'error':error,
+                                                    'animals_to_check':animals_to_check,
                                                     })
