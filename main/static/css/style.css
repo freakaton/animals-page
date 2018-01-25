@@ -49,19 +49,23 @@
     border-radius: 100px;
 }
 
-.post-block {
+.profile-block {
     background-color: #efefef;
     padding: 5px;
 }
-.post-block-desicion {
+.profile-block-desicion {
     text-align: center;
 }
 
-.post-block-info {
+.profile-block-info {
     color:#fc3a9e;
 }
 
-.post-block-text {
+.profile-block-text {
     vertical-align: middle;
     margin-left: 5px;
+}
+
+.profile-block-text-preview_button{
+    float: right;
 }

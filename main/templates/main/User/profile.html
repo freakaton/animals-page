@@ -13,45 +13,78 @@
 
 {% block content %}
     {% if user.is_staff %}
-        <div class="col-sm-12"> 
-            <h3>Animals to check:</h3>
-        </div>
-        {% for animal in animals_to_check  %}
-            
-        {% endfor %}
-        {% if not animals_to_check %}
-            <h5 class="top-buffer">There are no posts to check.</h5>
-        {% endif %}
-        <div class="col-sm-12"> 
-            <h3>Posts to check:</h3>
-        </div>
-        {% for post in posts_to_check  %}
-            <div class="col-sm-6 post-block top-buffer">
-                <small class="disabled post-block-info">published: {{post.pub_date}} by {{ post.user }} about <a href="{% url 'main:about_animal' post.where %} "> {{post.where}}</a>, {{post.where.type}}</small>
-                <p class="post-block-text" >{{post.text}}</p>
+        {% block animals_to_check %}
+            <div class="col-sm-12"> 
+                <h3>Animals to check:</h3>
             </div>
-            <div class="col-sm-1 top-buffer post-block-desicion">
-            <form method="POST">
-                {% csrf_token %}
-                <input type="hidden" name="post_id" value="{{post.pk}}">
-                <button class="btn btn-success" name="desicion" value="apply">apply</button>
-                <input type="hidden" name="post_id" value="{{post.pk}}">
-                <button class="btn btn-danger top-buffer" name="desicion" value="decline">decline</button>
-            </form>
+            {% for animal in animals_to_check  %}
+                <div class="col-sm-6 profile-block top-buffer">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            {% thumbnail animal.image "100x100" crop="center" as im %}
+                                <img class="rounded img-fluid" src="{{ im.url }}"   >
+                            {% empty %}
+                                <img class="img-fluid" src="/media/None.jpg" alt="Image does not exist">
+                            {% endthumbnail %}
+                        </div>
+                        <div class="col-sm-9">
+                            <h5 class="profile-block-text">
+                                {{animal.name}}
+                                <small>
+                                    in <a href="{% url 'main:about_type' animal.type %}">{{animal.type}}</a>
+                                </small>
+                                <a class="profile-block-text-preview_button" href="{% url 'main:about_animal' animal.name %}"> Preview </a>
+                            </h5>
+                            <p>{{animal.description}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1 top-buffer profile-block-desicion">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="animal_id" value="{{animal.pk}}">
+                    <button class="btn btn-success" name="desicion" value="apply">apply</button>
+                    <button class="btn btn-danger top-buffer" name="desicion" value="decline">decline</button>
+                </form>
+                </div>
+                <div class="clearfix"></div>
+            {% endfor %}
+            {% if not animals_to_check %}
+                <h5 class="top-buffer">There are no posts to check.</h5>
+            {% endif %}
+        {% endblock animals_to_check %}
+
+        {% block posts_to_check %}
+            <div class="col-sm-12"> 
+                <h3>Posts to check:</h3>
             </div>
-            <div class="clearfix"></div>
-        {% endfor %}
-        {% if not posts_to_check %}
-            <h5 class="top-buffer">There are no posts to check.</h5>
-        {% endif %}
+            {% for post in posts_to_check  %}
+                <div class="col-sm-6 profile-block top-buffer">
+                    <small class="disabled post-block-info">published: {{post.pub_date}} by {{ post.user }} about <a href="{% url 'main:about_animal' post.where %} "> {{post.where}}</a>, {{post.where.type}}</small>
+                    <p class="profile-block-text" >{{post.text}}</p>
+                </div>
+                <div class="col-sm-1 top-buffer profile-block-desicion">
+                <form method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="post_id" value="{{post.pk}}">
+                    <button class="btn btn-success" name="desicion" value="apply">apply</button>
+                    <button class="btn btn-danger top-buffer" name="desicion" value="decline">decline</button>
+                </form>
+                </div>
+                <div class="clearfix"></div>
+            {% endfor %}
+            {% if not posts_to_check %}
+                <h5 class="top-buffer">There are no posts to check.</h5>
+            {% endif %}
+        {% endblock posts_to_check %}
     {% endif %}
     <div class="col-sm-12 top-buffer"> 
         <h3>My posts:</h3>
     </div>
     {% for post in posts %}
-        <div class="col-sm-7 post-block top-buffer">
+        <div class="col-sm-7 profile-block top-buffer">
             <small class="text-muted">published: {{post.pub_date}} about <a href="{% url 'main:about_animal' post.where %} ">{{post.where}}</a>, {{post.where.type}}</small>
-            <p class="post-block-text" >{{post.text}}</p>
+            <p class="profile-block-text" >{{post.text}}</p>
         </div>
         <div class="col-sm-1">
             <form method="POST">

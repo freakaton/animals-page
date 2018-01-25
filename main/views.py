@@ -113,15 +113,25 @@ def profile(request):
         animals_to_check = None
 
     if request.method == 'POST':
-        if request.POST['post_id']:
+        desicion = request.POST['desicion']
+        if request.POST.get('post_id', False):
             post_id = request.POST['post_id']
-            desicion = request.POST['desicion']
             post = Post.objects.get(pk=post_id)
             if desicion == 'apply':
                 post.verified = True
                 post.save()
             elif desicion == 'decline':
                 post.delete()
+            else:
+                raise Http404
+        elif request.POST.get('animal_id', False):
+            animal_id = request.POST['animal_id']
+            animal = Animal.objects.get(pk=animal_id)
+            if desicion == 'apply':
+                animal.verified = True
+                animal.save()
+            elif desicion == 'decline':
+                animal.delete()
             else:
                 raise Http404
     return render(request,'main/User/profile.html',{'posts':posts,
