@@ -1,12 +1,12 @@
 from django.db import models
 from django.contrib.auth.models import User
-# Create your models here.
 
 
 class Type(models.Model):
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=500, null=True)
     image = models.ImageField(upload_to='types/',null=True, blank=True)
+
     def __str__(self):
         return self.name
 
@@ -21,10 +21,6 @@ class Type(models.Model):
     
 
 class Animal(models.Model):
-
-    def __str__(self):
-        return self.name
-
     name = models.CharField(max_length=60)
     description = models.CharField(max_length=500, null=True)
     type = models.ForeignKey('Type',on_delete=models.CASCADE)
@@ -33,12 +29,17 @@ class Animal(models.Model):
     image = models.ImageField(upload_to='animales/',null=True, blank=True)
     verified = models.BooleanField(default=False)
 
-class Post (models.Model):
     def __str__(self):
-        return 'post at animal ' + str(self.where)
+        return self.name
+
+
+class Post (models.Model):
     user = models.ForeignKey(User, verbose_name='Author')
     text = models.CharField(max_length=10000)
     pub_date = models.DateTimeField(auto_now_add=True)
     edit_date = models.DateTimeField(null=True, auto_now=True)
     verified = models.BooleanField(default=False)
     where = models.ForeignKey(Animal)
+
+    def __str__(self):
+        return 'post at animal ' + str(self.where)
