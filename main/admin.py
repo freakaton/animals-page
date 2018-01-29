@@ -1,8 +1,6 @@
 from django.contrib import admin
 from .models import Animal, Type
 
-# Register your models here.
-
 
 def verify(modeladmin, request, queryset):
     for model in queryset:

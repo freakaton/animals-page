@@ -8,6 +8,7 @@ from main import forms
 
 
 def last_animals(request):
+    """Get last 5 animals, that have been added."""
     last_animals = []
     for animal in Animal.objects.order_by('-pub_date')[:5]:
         last_animals.append(animal)
@@ -15,6 +16,7 @@ def last_animals(request):
 
 
 def homepage(request):
+    """Main page of app."""
     animal_types = []
     request.user
     for type in Type.objects.all():
@@ -30,6 +32,7 @@ def homepage(request):
 
 
 def about_type(request, animal_type):
+    """Page, that displays info about type and his animals."""
     animal_type = Type.objects.get(name=animal_type)
     return render(request, 'main/about_type.html', {
         'animal_type': animal_type,
@@ -37,6 +40,7 @@ def about_type(request, animal_type):
 
 
 def about_animal(request, animal_name):
+    """Same as view above, but with animals."""
     animal = Animal.objects.get(name=animal_name)
     posts = Post.objects.filter(where=animal, verified=True)
     if request.method == 'POST':
@@ -57,6 +61,7 @@ def about_animal(request, animal_name):
 
 
 def add_animal(request, animal_type):
+    """Get form, that allow users make new animal topics."""
     animal_type = get_object_or_404(Type, name=animal_type)
     if request.method == 'POST':
         form = forms.AddAnimalForm(request.POST, request.FILES)
@@ -73,12 +78,13 @@ def add_animal(request, animal_type):
 
 
 def register(request):
+    """Registration form."""
     if request.method == 'POST':
         try:
             User.objects.get(username=request.POST['username'])
             return render(request, 'main/User/register.html', {
-                                                        'error': 'exist'
-                                                        })
+                'error': 'exist'
+            })
         except ObjectDoesNotExist:
             pass
         context = request.POST
@@ -90,13 +96,14 @@ def register(request):
             return redirect('/')
         else:
             return render(request, 'main/User/register.html', {
-                                                        'error': '!full_data'
-                                                        })
+                'error': '!full_data'
+            })
     else:
         return render(request, 'main/User/register.html')
 
 
 def login(request):
+    """Login form."""
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -117,6 +124,12 @@ def logout(request):
 
 
 def profile(request):
+    """One page for staff and common users.
+
+    Staff can manage non-verified posts and animal topics Users can see
+    their posts and have permission to delete their own posts
+
+    """
     posts = Post.objects.filter(user=request.user)
     if request.user.is_staff:
         posts_to_check = Post.objects.filter(verified=False)
@@ -148,7 +161,7 @@ def profile(request):
             else:
                 raise Http404
     return render(request, 'main/User/profile.html', {
-                                        'posts': posts,
-                                        'posts_to_check': posts_to_check,
-                                        'animals_to_check': animals_to_check,
-                                                      })
+        'posts': posts,
+        'posts_to_check': posts_to_check,
+        'animals_to_check': animals_to_check,
+    })

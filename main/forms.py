@@ -27,6 +27,8 @@ class AddAnimalForm(forms.ModelForm):
 
 
 class AddPostForm(forms.ModelForm):
+    """Form for adding posts to animal topics."""
+
     def clean_text(self):
         if len(self.cleaned_data['text']) < 10:
             raise forms.ValidationError(
