@@ -1,5 +1,4 @@
-myvenv
-.vscode
+﻿myvenv
 */__pycache__
 media
 *.pyc
