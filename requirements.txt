@@ -29,3 +29,4 @@ webencodings==0.5.1
 Willow==1.0
 wrapt==1.10.11
 yarg==0.1.9
+gunicorn==19.6.0

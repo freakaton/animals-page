@@ -7,7 +7,7 @@ SECRET_KEY = '0d_z66$=zxxzknyu4umk$i80votmgxm23176!70hd&je%t9n78'
 
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 CACHES = {
     'default': {
@@ -66,10 +66,10 @@ WSGI_APPLICATION = 'animals.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'djangodb',
-        'USER': 'freakaton',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
+        'NAME': 'animals-page',
+        'USER': 'animals-page',
+        'PASSWORD': 'animals-page',
+        'HOST': 'postgres',
         'PORT': '5432',
     }
 }
@@ -112,7 +112,8 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')
 
 # LOGIN
 
