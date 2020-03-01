@@ -1,0 +1,45 @@
+version: '3'
+services:
+
+  web:
+      build: .
+      container_name: animals-page
+      volumes:
+      - .:/app
+      - static:/app/static_cdn
+      - media:/app/media_cdn
+      depends_on:
+          - postgres
+      expose:
+        - 8080
+      command: bash -c "python manage.py collectstatic --no-input && python manage.py migrate && gunicorn --workers=3 animals.wsgi -b 0.0.0.0:8080"
+
+  postgres:
+      build: ./postgres
+      restart: unless-stopped
+      expose:
+        - "5432"
+      environment:   # will be used by the init script
+            LC_ALL: C.UTF-8
+            POSTGRES_USER: animals-page
+            POSTGRES_PASSWORD: animals-page
+            POSTGRES_DB: animals-page
+      volumes:
+          - pgdata:/var/lib/postgresql/data/
+
+  nginx:
+      restart: always
+      build: ./nginx/
+      volumes:
+        - ./nginx/:/etc/nginx/conf.d
+        - ./logs/:/app/logs
+        - static:/app/static_cdn
+        - media:/app/media_cdn
+      ports:
+        - "1221:80"
+      links:
+        - web
+volumes:
+  pgdata:
+  media:
+  static:

@@ -26,7 +26,7 @@ class Animal(models.Model):
     type = models.ForeignKey('Type', on_delete=models.CASCADE)
     pub_date = models.DateTimeField(auto_now_add=True)
     edit_date = models.DateTimeField(null=True, auto_now=True)
-    image = models.ImageField(upload_to='animales/', null=True, blank=True)
+    image = models.ImageField(upload_to='animals/', null=True, blank=True)
     verified = models.BooleanField(default=False)
 
     def __str__(self):
